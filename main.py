@@ -1,15 +1,19 @@
+import collections
 from pathlib import Path
+from pprint import pprint
 
-# The Path of the directory to be sorted
-p = Path(input("Add a windows path:"))
-# This populates a list with the filenames in the directory
-fileList = [x for x in p.iterdir() if x.is_file()]
+targetDir = Path(r'D:\Download')
+# p = Path(input("Add a windows path:"))
+fileList = [x for x in targetDir.rglob('*') if x.is_file() and not x.is_relative_to(targetDir.joinpath('OrganizerPie'))]
+dirList = [x for x in targetDir.rglob('*') if x.is_dir() and not x.is_relative_to(targetDir.joinpath('OrganizerPie'))]
+pprint(collections.Counter(p.suffix for p in fileList))
+targetExt = input('Choose an extesion to sorte:')
+distPath = targetDir.joinpath('OrganizerPie', targetExt)
+distPath.mkdir(parents=True, exist_ok=True)
+for f in fileList:
+    if f.suffix == f'.{targetExt}':
+        distFilePath = distPath.joinpath(f.name)
+        if not distFilePath.exists():
+            f.replace(distFilePath)
 
-for file_ in fileList:
-    cible = file_.parent.joinpath('target')
-    cible.mkdir(exist_ok=True)
-    target = cible.joinpath(file_.name)
-    print(target)
-    if target.exists():
-        target = target.with_stem(f'{file_.stem}0')
-    file_.replace(target)
+
