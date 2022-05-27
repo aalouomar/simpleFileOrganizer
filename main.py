@@ -1,17 +1,15 @@
-import os
-import shutil
+from pathlib import Path
 
 # The Path of the directory to be sorted
-path = 'C:\\Users\\OMAR\\Downloads'
+p = Path(input("Add a windows path:"))
 # This populates a list with the filenames in the directory
-fileList = os.listdir(path)
+fileList = [x for x in p.iterdir() if x.is_file()]
 
 for file_ in fileList:
-    name, ext = os.path.splitext(file_)
-    ext = ext[1:]
-    if os.path.isdir(f'{path}/{file_}'):
-        continue
-    if not os.path.exists(f'{path}/{ext}'):
-        os.makedirs(f'{path}/{ext}')
-    shutil.move(f'{path}/{file_}', f'{path}/{ext}/{file_}')
-    print(f'{file_} is moved')
+    cible = file_.parent.joinpath('target')
+    cible.mkdir(exist_ok=True)
+    target = cible.joinpath(file_.name)
+    print(target)
+    if target.exists():
+        target = target.with_stem(f'{file_.stem}0')
+    file_.replace(target)
