@@ -26,8 +26,6 @@ fileList = [x for x in targetDir.rglob('*')
 dirList = sorted([(len(x.parts), x) for x in targetDir.rglob('*')
                   if x.is_dir()
                   and not x.is_relative_to(targetDir.joinpath('OrganizerPie'))], reverse=True)
-for d in dirList:
-    print(d)
 
 for f in fileList:
     for x in directories:
