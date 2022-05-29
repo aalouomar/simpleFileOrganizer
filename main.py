@@ -16,7 +16,7 @@ directories = {"HTML": [".html5", ".html", ".htm", ".xhtml"],
                "PDF": [".pdf"],
                "PYTHON": [".py"],
                "XML": [".xml"],
-               "EXE": [".exe"],
+               "EXE": [".exe", ".apk"],
                "SHELL": [".sh"]
                }
 
@@ -28,13 +28,17 @@ dirList = sorted([(len(x.parts), x) for x in targetDir.rglob('*')
                   and not x.is_relative_to(targetDir.joinpath('OrganizerPie'))], reverse=True)
 
 for f in fileList:
-    for x in directories:
-        if f.suffix in directories[x]:
+    distdirPath = targetDir.joinpath('OrganizerPie', "OTHERS")
+    for x, y in directories.items():
+        if f.suffix in y:
             distdirPath = targetDir.joinpath('OrganizerPie', x)
-            distdirPath.mkdir(parents=True, exist_ok=True)
-            distFilePath = distdirPath.joinpath(f.name)
-            if not distFilePath.exists():
-                f.replace(distFilePath)
+    distdirPath.mkdir(parents=True, exist_ok=True)
+    distFilePath = distdirPath.joinpath(f.name)
+    renaming_counter = 1
+    while distFilePath.exists():
+        distFilePath = distFilePath.with_stem(f'{f.stem}({renaming_counter})')
+        renaming_counter += 1
+    f.replace(distFilePath)
 for d in dirList:
     try:
         d[1].rmdir()
