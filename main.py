@@ -1,6 +1,26 @@
 from pathlib import Path
+import PySimpleGUI as sg
 
-targetDir = Path(r'D:\Download')
+targetDir = ""
+sg.theme('DarkBlue')
+
+layout = [[sg.T('Target Folder')],
+          [sg.In(key='input')],
+          [sg.FolderBrowse(target='input'), sg.OK()]]
+
+window = sg.Window('Select Folder', layout)
+
+while True:
+    event, values = window.read()
+    if event == sg.WIN_CLOSED :
+        break
+    if event == 'OK' :
+        dirpath = values['input']
+        targetDir = Path(dirpath)
+        if targetDir.is_dir() : 
+            break
+window.close()
+
 directories = {"IMAGES": [".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".bpg", "svg", ".heif", ".psd"],
                "VIDEOS": [".avi", ".flv", ".wmv", ".mov", ".mp4", ".webm", ".vob", ".mng", ".qt", ".mpg",
                           ".mpeg", ".3gp"],
