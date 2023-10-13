@@ -1,32 +1,13 @@
 from pathlib import Path
-import PySimpleGUI as sg
 
-targetDir = ""
-sg.theme('DarkBlue')
-
-layout = [[sg.T('Target Folder')],
-          [sg.In(key='input')],
-          [sg.FolderBrowse(target='input'), sg.OK()]]
-
-window = sg.Window('Select Folder', layout)
-
-while True:
-    event, values = window.read()
-    if event == sg.WIN_CLOSED :
-        break
-    if event == 'OK' :
-        dirpath = values['input']
-        targetDir = Path(dirpath)
-        if targetDir.is_dir() : 
-            break
-window.close()
+targetDir = Path("")
 
 directories = {"IMAGES": [".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".bpg", "svg", ".heif", ".psd"],
                "VIDEOS": [".avi", ".flv", ".wmv", ".mov", ".mp4", ".webm", ".vob", ".mng", ".qt", ".mpg",
                           ".mpeg", ".3gp"],
                "AUDIO": [".aac", ".aa", ".aac", ".dvf", ".m4a", ".m4b", ".m4p", ".mp3", ".msv", "ogg",
                          "oga", ".raw", ".vox", ".wav", ".wma"],
-               "ARCHIVES": [".a", ".ar", ".cpio", ".iso", ".tar", ".gz", ".rz", ".7z",".dmg", ".rar",
+               "ARCHIVES": [".a", ".ar", ".cpio", ".iso", ".tar", ".gz", ".rz", ".7z", ".dmg", ".rar",
                             ".xar", ".zip"],
                "APPS\\EXE": [".exe"],
                "APPS\\APK": [".apk"],
