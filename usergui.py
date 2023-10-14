@@ -1,6 +1,7 @@
 import ttkbootstrap as ttkb
 from ttkbootstrap.constants import *
 from tkinter.filedialog import askdirectory
+from main import trier
 
 
 class OrganizerPie(ttkb.Frame):
@@ -47,6 +48,7 @@ class OrganizerPie(ttkb.Frame):
                         'gz': ttkb.BooleanVar(value=False),
                         'iso': ttkb.BooleanVar(value=False)}
         }
+        self.result_text = ttkb.StringVar(value="")
 
         self.directory_browser_block()
         self.options_block()
@@ -91,6 +93,9 @@ class OrganizerPie(ttkb.Frame):
                                                    state='disabled')
                     op_checkbox.pack(side=TOP, fill=X, padx=(10, 0), pady=5)
 
+        result_label = ttkb.Label(options_container, textvariable=self.result_text)
+        result_label.pack(side=BOTTOM, fill=X, padx=20)
+
     def footer_block(self):
         """Create and add "proceed" and "cancel" bouttons"""
         footer_container = ttkb.Frame(self)
@@ -107,16 +112,8 @@ class OrganizerPie(ttkb.Frame):
             return
         self.filename.set(path)
 
-    def on_cancel(self):
-        pass
-
     def on_proceed(self):
-        pass
-        # for x in self.winfo_children()[1].winfo_children():
-        #     if x.winfo_class() == 'TCheckbutton':
-        #         if str(x.configure('state')[4]) != 'disabled':
-        #             if self.getvar(x.configure('variable')[4]) == '1':
-        #                 print(str(x.configure('text')[4]))
+        self.result_text.set(trier(self.filename.get()))
 
     def on_toggle(self):
         catframe = self.winfo_children()[1].winfo_children()[-1].winfo_children()
@@ -137,9 +134,6 @@ class OrganizerPie(ttkb.Frame):
             for frame in catframe:
                 for cb in frame.winfo_children():
                     cb['state'] = 'disabled'
-
-
-
 
 
 if __name__ == '__main__':
